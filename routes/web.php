@@ -16,3 +16,4 @@ Route::get('/', function () {
 });
 
 //没有灵魂
+Route::get("/test/hello","TestController@hello");
