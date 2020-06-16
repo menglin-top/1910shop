@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 //没有灵魂
 Route::get("/test/hello","TestController@hello");
+Route::any("/goods/detail","Goods\GoodsController@detail");
