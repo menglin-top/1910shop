@@ -10,6 +10,9 @@ class TestController extends Controller
         echo date("y-m-d H:i:s");
     }
     public function redis(){
-        echo 123;
+        $key="name2";
+        $val=Redis::get($key);
+        var_dump($val);
+        echo "$key:".$val;
     }
 }
