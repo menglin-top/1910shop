@@ -15,4 +15,5 @@ class GoodsController extends Controller
         $goods_info=GoodsModel::find($goods_id)->toArray();
         print_r($goods_info);
     }
+
 }

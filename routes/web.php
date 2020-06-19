@@ -14,7 +14,12 @@
 Route::get('/', function () {
     return view('welcome');
 });
+Route::get('/info', function () {
+    phpinfo();
+});
 
 //没有灵魂
 Route::get("/test/hello","TestController@hello");
+Route::any("/test/redis","TestController@redis");
+
 Route::any("/goods/detail","Goods\GoodsController@detail");
