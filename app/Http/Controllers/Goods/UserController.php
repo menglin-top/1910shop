@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Redis;
 class UserController extends Controller
 {
     public function reg(){
-        $name1="zhangsan";
-        $val=Redis::get($name1);echo "$val:".$val;
+        $key="name1";
+        $val=Redis::get($key);
         var_dump($val);
-
+        echo "$key:".$val;
     }
 }
