@@ -22,4 +22,7 @@ Route::get('/info', function () {
 Route::get("/test/hello","TestController@hello");
 Route::any("/test/redis","TestController@redis");
 
-Route::any("/goods/detail","Goods\GoodsController@detail");
+Route::any("/goods/detail","Goods\GoodsController@detail");//商品信息
+Route::any("/goods/info","Goods\GoodsController@info");//               没有东西
+Route::any("/user/reg","Goods\UserController@reg");//用户注册
+
