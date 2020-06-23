@@ -46,6 +46,8 @@ class IndexController extends Controller
         $user=User::where(["user_name"=>$user_name])->first();
         $res=password_verify($password,$user->password);
         if($res){
+            setcookie("user_id",$user->user_id,time()+3600,"/");
+            setcookie("user_name",$user->user_name,time()+3600,"/");
             header("Refresh:1;url=/user/conter");
             echo "登陆成功";
         }else{
@@ -54,6 +56,10 @@ class IndexController extends Controller
         }
     }
     public function conter(){
-        return view("user/conter");
+        if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_name'])){
+            return view("user/conter");
+        }else{
+            return redirect("user/login");
+        }
     }
 }
