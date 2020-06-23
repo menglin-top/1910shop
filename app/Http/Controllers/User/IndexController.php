@@ -4,6 +4,7 @@ namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cookie;
 use App\Model\User;
 
 class IndexController extends Controller
@@ -46,8 +47,10 @@ class IndexController extends Controller
         $user=User::where(["user_name"=>$user_name])->first();
         $res=password_verify($password,$user->password);
         if($res){
-            setcookie("user_id",$user->user_id,time()+3600,"/");
-            setcookie("user_name",$user->user_name,time()+3600,"/");
+//            setcookie("user_id",$user->user_id,time()+3600,"/");
+//            setcookie("user_name",$user->user_name,time()+3600,"/");
+            Cookie::queue('user_id',$user->user_id,10);
+            Cookie::queue('user_name',$user->user_name,10);
             header("Refresh:1;url=/user/conter");
             echo "登陆成功";
         }else{
@@ -56,10 +59,17 @@ class IndexController extends Controller
         }
     }
     public function conter(){
-        if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_name'])){
-            return view("user/conter");
+        if(Cookie::has('user_id')){
+            $user=User::limit(5)->get();
+            return view("user/conter",compact("user"));
         }else{
             return redirect("user/login");
         }
+//        if(isset($_COOKIE['user_id']) && isset($_COOKIE['user_name'])){
+//            $user=User::limit(5)->get();
+//            return view("user/conter",compact("user"));
+//        }else{
+//            return redirect("user/login");
+//        }
     }
 }
