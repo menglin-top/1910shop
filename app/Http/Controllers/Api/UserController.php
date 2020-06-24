@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Model\User;
 use App\Model\Token;
+use Illuminate\Support\Facades\Redis;
 
 class UserController extends Controller
 {
@@ -67,11 +68,13 @@ class UserController extends Controller
             //生成token
             $str=$user->user_id.$user->user_name.time();
             $token = substr(md5($str),10,16) . substr(md5($str),0,10);
-            $data=[
-                'uid'   => $user->user_id,
-                'token' => $token
-            ];
-            Token::insert($data);
+//            $data=[
+//                'uid'   => $user->user_id,
+//                'token' => $token
+//            ];
+//            Token::insert($data);
+            Redis::set($token,$user->user_id);
+            Redis::expire($token,90);
             $response = [
                 'errno'  => 0,
                 'msg'    => '登陆成功',
@@ -87,9 +90,10 @@ class UserController extends Controller
     }
     public function conter(){
         $token=$_GET["token"];
-        $res=Token::where("token",$token)->first();
-        if($res){
-            $uid = $res->uid;
+        //$res=Token::where("token",$token)->first();
+        $uid=Redis::get($token);
+        if($uid){
+            //$uid = $res->uid;
             $user_info = User::find($uid);
             echo $user_info->user_name."欢迎来到个人中心";
         }else{
