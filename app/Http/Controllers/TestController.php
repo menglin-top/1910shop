@@ -15,4 +15,11 @@ class TestController extends Controller
         var_dump($val);
         echo "$key:".$val;
     }
+    public function test1(){
+        $data=[
+            "name"=>"zhangsan",
+            "email"=>"1501113246@qq.com"
+        ];
+        return $data;
+    }
 }
