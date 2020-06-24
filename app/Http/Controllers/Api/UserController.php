@@ -89,7 +89,9 @@ class UserController extends Controller
         $token=$_GET["token"];
         $res=Token::where("token",$token)->first();
         if($res){
-            echo "欢迎来到个人中心";
+            $uid = $res->uid;
+            $user_info = User::find($uid);
+            echo $user_info->user_name."欢迎来到个人中心";
         }else{
             echo "请先登陆";
         }
