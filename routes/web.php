@@ -36,8 +36,8 @@ Route::any("/user/conter","User\IndexController@conter");//用户中心
 Route::post("/api/user/reg","Api\UserController@reg");//用户注册
 Route::post("/api/user/login","Api\UserController@login");//用户登陆
 Route::post("/api/user/conter","Api\UserController@conter")->middleware("check.pri","brush");//个人中心
-Route::post("/api/user/orders","Api\UserController@orders")->middleware("check.pri");//我的订单
-Route::post("/api/user/cart","Api\UserController@cart")->middleware("check.pri");//购物车
+Route::post("/api/user/orders","Api\UserController@orders")->middleware("check.pri","brush");//我的订单
+Route::post("/api/user/cart","Api\UserController@cart")->middleware("check.pri","brush");//购物车
 
 //测试
 Route::post("/api/a","Api\TestController@a")->middleware("check.pri");//放刷
