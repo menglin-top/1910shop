@@ -89,9 +89,10 @@ class UserController extends Controller
         return $response;
     }
     public function conter(){
-        $token=$_GET["token"];
+        $token=request()->input('token');
         //$res=Token::where("token",$token)->first();
         $uid=Redis::get($token);
+        //判断用户是否登录 ,判断是否有 uid 字段
         if($uid){
             //$uid = $res->uid;
             $user_info = User::find($uid);
@@ -99,5 +100,38 @@ class UserController extends Controller
         }else{
             echo "请先登陆";
         }
+    }
+    //我的订单
+    public function orders(){
+        $arr = [
+            '0345830953454345354',
+            '9875830953454556354',
+            '1235830953454345354',
+            '2345830953454345354',
+            '5675830953454345354',
+        ];
+
+        $response = [
+            'errno' => 0,
+            'msg'   => 'ok',
+            'data'  => [
+                'orders'    => $arr
+            ]
+        ];
+        return $response;
+    }
+    //购物车
+    public function cart(){
+        $goods=[
+            '123',
+            '456',
+            '789'
+        ];
+        $response=[
+            'errno'=>0,
+            'msg'=>'ok',
+            'data'=>$goods
+        ];
+        return $response;
     }
 }
