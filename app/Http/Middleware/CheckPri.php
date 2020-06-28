@@ -21,7 +21,7 @@ class CheckPri
         if(!$uid){
             $response=[
                 'errno'=>50009,
-                'msg'=>'鉴权失败1111'
+                'msg'=>'鉴权失败'
             ];
             echo json_encode($response,JSON_UNESCAPED_UNICODE);
             die;
