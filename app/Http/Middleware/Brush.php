@@ -25,10 +25,12 @@ class Brush
                 'msg'=>'请求操作频繁,请10秒后再试',
             ];
             Redis::expire($key,10);
-            echo json_encode($response,JSON_UNESCAPED_UNICODE);
-            die;
+            return response()->json($response);
+//            echo json_encode($response,JSON_UNESCAPED_UNICODE);
+//            die;
         }else{
             Redis::incr($key);
+            Redis::expire($key,60);
         }
 
         return $next($request);
