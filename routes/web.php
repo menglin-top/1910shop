@@ -22,6 +22,9 @@ Route::get('/info', function () {
 Route::get("/test/hello","TestController@hello");
 Route::any("/test/redis","TestController@redis");
 Route::any("/test1","TestController@test1");
+Route::any("/test/sign","TestController@sign");
+Route::any("/secret","TestController@secret");
+
 
 Route::any("/goods/detail","Goods\GoodsController@detail");//商品信息
 
