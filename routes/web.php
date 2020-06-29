@@ -24,6 +24,9 @@ Route::any("/test/redis","TestController@redis");
 Route::any("/test1","TestController@test1");
 Route::any("/test/sign","TestController@sign");
 Route::any("/secret","TestController@secret");
+Route::any("/test/send-data","TestController@sendData");
+Route::any("/test/send-post","TestController@sendPost");
+
 
 
 Route::any("/goods/detail","Goods\GoodsController@detail");//商品信息

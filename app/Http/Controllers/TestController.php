@@ -28,23 +28,50 @@ class TestController extends Controller
         $sign=md5($data.$key);
         echo "文本:".$data;echo "<br>";
         echo "生成的签名:".$sign;echo "<hr>";
-        $url="http://www.1910.com/secret?data=".$data.'&'."sign=".$sign;
+        $url="http://www.api.com/secret?data=".$data.'&'."sign=".$sign;
 //        echo $url;
-        $response = file_get_contents($url);
+       $response = file_get_contents($url);
+       echo $response;
+    }
+    public function sendData(){
+        $url="http://www.api.com/test/receive?name=吴孟林&&age=18";
+        $response=file_get_contents($url);
         echo $response;
     }
-    public function secret(){
-        $key="1910";
-        $data=$_GET['data'];
-        $sign=$_GET['sign'];
-        echo "文本:".$data;echo "<br>";
-        echo "生成的签名:".$sign;echo "<hr>";
-        $local_sign=md5($data.$key);
-        echo "生成的签名:".$local_sign;echo "<hr>";
-        if($local_sign==$sign){
-            echo "签名通过";
-        }else{
-            echo "签名失败";
+    public function sendPost(){
+        $key="wechat";
+        $data=[
+            'name'=>"lisi",
+            'age'=>"18"
+        ];
+        $str=json_encode($data).$key;
+        $sign=sha1($str);
+        $send_data = [
+            'data'  => json_encode($data),
+            'sign'  => $sign
+        ];
+        $url="http://www.api.com/test/receive-post";
+        //使用 curl post数据
+        // 1 实例化
+        $ch = curl_init();
+        // 2 配置参数
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,1);        // 使用post 方式
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$send_data);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);   // 通过变量接收响应
+
+        // 3 开启会话（发送请求）
+        $response = curl_exec($ch);
+        // 4 检测错误
+        $errno = curl_errno($ch);       //错误码
+        $errmsg = curl_error($ch);
+        if($errno)
+        {
+            echo '错误码： '.$errno;echo '</br>';
+            var_dump($errmsg);
+            die;
         }
+        curl_close($ch);
+        echo $response;
     }
 }
