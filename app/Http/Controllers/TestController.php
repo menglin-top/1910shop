@@ -75,6 +75,9 @@ class TestController extends Controller
         curl_close($ch);
         echo $response;
     }
+    /**
+    *对称加密
+     */
     public function encrypt(){
         $data="把思念装进漂流瓶";
         echo "原内容:".$data;echo "<br>";
@@ -117,5 +120,22 @@ class TestController extends Controller
             die;
         }
         curl_close($ch);
+    }
+    /**
+    *非对称加密
+     */
+    public function RsaEncrypt(){
+        $data="让自己变得快乐";
+        //公钥加密
+        $key_content=file_get_contents(storage_path("keys/pub.key"));//读取公钥内容
+        $pub_key=openssl_get_publickey($key_content);//获取公钥
+        openssl_public_encrypt($data,$enc,$pub_key);
+        var_dump($enc);echo "<br>";
+
+        //私钥解密
+        $key_content=file_get_contents(storage_path("keys/priv.key"));//读取私钥内容
+        $priv_key=openssl_get_privatekey($key_content);//获取私钥
+        openssl_private_decrypt($enc,$dec,$priv_key);
+        var_dump($dec);
     }
 }
