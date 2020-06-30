@@ -45,6 +45,7 @@ class TestController extends Controller
             'age'=>"18"
         ];
         $str=json_encode($data).$key;
+        echo "需要传输过去的数据:";echo $str;echo "<br>";
         $sign=sha1($str);
         $send_data = [
             'data'  => json_encode($data),
@@ -73,5 +74,48 @@ class TestController extends Controller
         }
         curl_close($ch);
         echo $response;
+    }
+    public function encrypt(){
+        $data="把思念装进漂流瓶";
+        echo "原内容:".$data;echo "<br>";
+        $method="AES-256-CBC";
+        $key="1910";
+        $iv="ruguoyunchengshi";
+        //加密
+        $enc=openssl_encrypt($data,$method,$key,OPENSSL_RAW_DATA,$iv);
+        echo "对称加密后:".$enc;echo "<br>";echo "<hr>";
+
+        //签名
+        $sign=sha1($enc.$key);
+        $data_post=[
+            'data'=>$enc,
+            'sign'=>$sign
+        ];
+        //解密
+//        $dec=openssl_decrypt($enc,$method,$key,OPENSSL_RAW_DATA,$iv);
+//        echo "解密后:".$dec;echo "<br>";
+        $url="http://www.api.com/test/decrypt";
+        //使用 curl post数据
+        // 1 实例化
+        $ch = curl_init();
+        // 2 配置参数
+        curl_setopt($ch,CURLOPT_URL,$url);
+        curl_setopt($ch,CURLOPT_POST,1);        // 使用post 方式
+        curl_setopt($ch,CURLOPT_POSTFIELDS,$data_post);
+        curl_setopt($ch,CURLOPT_RETURNTRANSFER,1);   // 通过变量接收响应
+
+        // 3 开启会话（发送请求）
+        $response = curl_exec($ch);
+        echo $response;
+        // 4 检测错误
+        $errno = curl_errno($ch);       //错误码
+        $errmsg = curl_error($ch);
+        if($errno)
+        {
+            echo '错误码： '.$errno;echo '</br>';
+            var_dump($errmsg);
+            die;
+        }
+        curl_close($ch);
     }
 }
